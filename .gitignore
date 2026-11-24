@@ -1,0 +1,70 @@
+git add .env.example .gitignore# ============================================
+# SUNDAY LLM - .gitignore
+# ============================================
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.whl
+
+# --- Virtual Environment ---
+venv/
+env/
+.venv/
+.env
+__pypackages__/
+
+# --- IDE ---
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# --- Jupyter Notebooks ---
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# --- Project Artifacts (large files, don't commit) ---
+/checkpoints/
+/data/
+/logs/
+/tokenizer_files/*.model
+/tokenizer_files/*.vocab
+/tokenizer_files/*.json
+wandb/
+
+# --- Model Files ---
+*.pt
+*.pth
+*.bin
+*.safetensors
+*.gguf
+*.onnx
+
+# --- Dataset Files ---
+*.parquet
+*.arrow
+*.csv
+*.tsv
+*.jsonl
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Environment Variables ---
+.env
+.env.local
+
+# --- Misc ---
+*.log
+*.tmp
+*.bak
