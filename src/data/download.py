@@ -57,8 +57,9 @@ def download_openwebtext(
     if verbose:
         print("[Download] Loading OpenWebText from HuggingFace...")
 
+    # NOTE: 'openwebtext' was renamed to 'Skylion007/openwebtext' on HF Hub
     dataset = load_dataset(
-        "openwebtext",
+        "Skylion007/openwebtext",
         split=split,
         cache_dir=cache_dir,
         trust_remote_code=True,
