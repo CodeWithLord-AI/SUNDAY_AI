@@ -212,6 +212,29 @@ class Trainer:
                         self.scaler if self.use_amp else None,
                     )
 
+                # --- Emergency first-step checkpoint ---
+                # Saves at step 1 so a file lands on Google Drive immediately,
+                # before any risk of Colab runtime expiry.
+                if self.step == 1:
+                    _first_ckpt = os.path.join(self.save_dir, "checkpoint_step0000001_init.pt")
+                    os.makedirs(self.save_dir, exist_ok=True)
+                    torch.save({
+                        "step": self.step, "epoch": self.epoch,
+                        "model_state_dict": self.model.state_dict(),
+                        "optimizer_state_dict": self.optimizer.state_dict(),
+                        "config": self.model.config,
+                        "train_loss": self.metrics.get_smoothed_loss(),
+                        "val_loss": float("inf"),
+                        "best_val_loss": self.best_val_loss,
+                    }, _first_ckpt)
+                    try:
+                        import sys
+                        if sys.platform != "win32":
+                            os.sync()
+                    except Exception:
+                        pass
+                    print(f"[Checkpoint] ✅ Init checkpoint written to Drive: {_first_ckpt}")
+
         print("\n[Trainer] Training complete!")
         print(f"[Trainer] Best val_loss: {self.best_val_loss:.4f}")
 

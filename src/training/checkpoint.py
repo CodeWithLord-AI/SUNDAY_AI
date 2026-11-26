@@ -85,6 +85,16 @@ def save_checkpoint(
     filepath = os.path.join(save_dir, filename)
 
     torch.save(checkpoint, filepath)
+
+    # --- Force OS buffer flush so Google Drive FUSE actually writes to cloud ---
+    # Without this, Colab may crash before Drive syncs the buffered bytes.
+    try:
+        import sys
+        if sys.platform != "win32":          # os.sync() is Linux/macOS only
+            os.sync()
+    except Exception:
+        pass
+
     print(f"[Checkpoint] Saved: {filepath}")
 
     # --- Keep only the last N checkpoints ---
@@ -122,6 +132,14 @@ def save_best_checkpoint(
         "config": config,
         "val_loss": val_loss,
     }, filepath)
+
+    # --- Force OS buffer flush so Google Drive FUSE actually writes to cloud ---
+    try:
+        import sys
+        if sys.platform != "win32":
+            os.sync()
+    except Exception:
+        pass
 
     print(f"[Checkpoint] New best model saved: {filepath} (val_loss={val_loss:.4f})")
     return filepath

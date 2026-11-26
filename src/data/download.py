@@ -62,7 +62,7 @@ def download_openwebtext(
         "Skylion007/openwebtext",
         split=split,
         cache_dir=cache_dir,
-        trust_remote_code=True,
+
     )
 
     if max_samples is not None:
