@@ -83,17 +83,13 @@ class Generator:
         prompt_ids = self.tokenizer.encode(prompt, add_bos=True, add_eos=False)
         input_ids = torch.tensor([prompt_ids], dtype=torch.long, device=self.device)
 
-        max_seq_len = getattr(self.model, 'config', {}).get('max_seq_len', 512)
         generated_ids = []
         eos_id = self.tokenizer.eos_id
 
         for _ in range(max_new_tokens):
-            # Crop to max context
-            context = input_ids[:, -max_seq_len:]
-
             # Forward pass
-            with torch.cuda.amp.autocast(enabled=self.device.type == 'cuda'):
-                logits = self.model(context)  # (1, T, vocab_size)
+            with torch.amp.autocast('cuda', enabled=self.device.type == 'cuda'):
+                logits = self.model(input_ids)  # (1, T, vocab_size)
 
             next_token_logits = logits[:, -1, :]  # (1, vocab_size)
 
@@ -156,14 +152,11 @@ class Generator:
         prompt_ids = self.tokenizer.encode(prompt, add_bos=True, add_eos=False)
         input_ids = torch.tensor([prompt_ids], dtype=torch.long, device=self.device)
 
-        max_seq_len = getattr(self.model, 'config', {}).get('max_seq_len', 512)
         eos_id = self.tokenizer.eos_id
         generated_ids = []
 
         for _ in range(max_new_tokens):
-            context = input_ids[:, -max_seq_len:]
-
-            logits = self.model(context)
+            logits = self.model(input_ids)
             next_token_logits = logits[:, -1, :]
 
             next_token = sample_next_token(

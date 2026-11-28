@@ -6,7 +6,7 @@ Dataset paths, processing parameters, and split ratios.
 
 Datasets used:
 1. OpenWebText (pretraining) - Open-source GPT-2 training data replica
-   - Source: https://huggingface.co/datasets/openwebtext
+   - Source: https://huggingface.co/datasets/Skylion007/openwebtext
    - License: MIT-like (derived from Reddit submissions)
    - Size: ~38 GB full, we use ~3 GB subset
 
@@ -30,7 +30,7 @@ import os
 PRETRAINING_DATA = {
     # --- Primary Dataset: OpenWebText ---
     "openwebtext": {
-        "hf_name": "openwebtext",           # HuggingFace dataset name
+        "hf_name": "Skylion007/openwebtext",           # HuggingFace dataset name
         "hf_config": None,                   # Dataset configuration
         "subset_size": 500_000,              # Number of documents to use
         "text_column": "text",               # Column containing text data
